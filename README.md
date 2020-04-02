@@ -39,35 +39,35 @@ https://github.com/cdjq/DFRobot_DS3231M <br>
 
 变量和函数共同属性
 ```python
-    '''当非下划线开头时代表为公有成员变量'''
+    #当非下划线开头时代表为公有成员变量
     SensorValue        = 0x00
     
-    '''当以下划线开头时代表为私有成员变量'''
+    #当以下划线开头时代表为私有成员变量
     _SensorValue        = 0x00
     
-    '''当非下划线开头时代表为公有函数'''
+    #当非下划线开头时代表为公有函数
     def test_func(self):
         #do something
     
-    '''当以下划线开头时代表为私有函数'''
+    #当以下划线开头时代表为私有函数
     def _test_func(self):
         #do something
 ```
 ## 变量命名
 ```python
-    '''驼峰方式，公有成员变量'''
+    #驼峰方式，公有成员变量
     SensorValue        = 0x00
     
-    '''驼峰方式，私有成员变量'''
+    #驼峰方式，私有成员变量
     _SensorValue        = 0x00
 ```
 
 ## 函数命名
 ```python
-    '''全部小写，专有名词之间以下划线连接，公有函数'''
+    #全部小写，专有名词之间以下划线连接，公有函数
     def test_func(self):
         #do something
-    '''全部小写，专有名词之间以下划线连接，私有函数'''
+    #全部小写，专有名词之间以下划线连接，私有函数
     def _test_func(self):
         #do something
 ```
@@ -75,10 +75,10 @@ https://github.com/cdjq/DFRobot_DS3231M <br>
 ## 寄存器
 寄存器变量命名方式
 ```python
-    '''全部大写，专有名词之间以下划线连接，公有成员变量'''
+    #全部大写，专有名词之间以下划线连接，公有成员变量
     REG_RTC_SEC        = 0x68
     
-    '''全部大写，专有名词之间以下划线连接，私有成员变量'''
+    #全部大写，专有名词之间以下划线连接，私有成员变量
     _REG_RTC_SEC        = 0X00
     
 ```
@@ -96,13 +96,13 @@ class TestStruct(Structure):
 ## 枚举
 枚举变量命名方式
 ```python
-    '''驼峰方式命名，公有成员变量'''
+    #驼峰方式命名，公有成员变量
     SquareWave_1Hz      = 0x00
     SquareWave_1kHz     = 0x08
     MinutesMatch                 = 0x07
     MinutesHoursMatch            = 0x08
 
-    '''驼峰方式命名，私有成员变量'''
+    #驼峰方式命名，私有成员变量
     _SquareWave_1Hz     = 0x00
     _SquareWave_1kHz    = 0x08
     _MinutesMatch                 = 0x07
@@ -112,10 +112,10 @@ class TestStruct(Structure):
 ## 列表
 列表相关命名方式
 ```python
-    '''全部小写，专有名词之间以下划线连接，公有成员变量'''
+    #全部小写，专有名词之间以下划线连接，公有成员变量
     test_list          =[]
     month              =[]
-    '''全部小写，专有名词之间以下划线连接，公有成员变量'''
+    #全部小写，专有名词之间以下划线连接，公有成员变量
     _test_list          =[]
     _month              =[]
 ```
