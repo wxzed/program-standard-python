@@ -199,7 +199,7 @@ class DFRobot_Sensor:
   '''
 ```
 
-## example中py文件的命令
+## example中py文件的命名
 ```python
   #看到demo名称基本就能猜到功能，专有名词之间以下划线连接。
   get_time_and_temp.py
