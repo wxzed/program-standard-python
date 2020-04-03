@@ -29,6 +29,7 @@ python语言 Raspberry封库编程规范 <br>
 * [运算符](#运算符)
 * [Readme中多个参数函数写法](#readme中多个参数函数写法)
 * [example中py文件的命令](#example中py文件的命令)
+* [example中的入口函数定义](#example中的入口函数定义)
 * [py文件头部写法](#py文件头部写法)
 * [高质量封库细节](#高质量封库细节)
 
@@ -204,6 +205,12 @@ class DFRobot_Sensor:
   #看到demo名称基本就能猜到功能，专有名词之间以下划线连接。
   get_time_and_temp.py
   get_time_from_NTP.py
+```
+
+## example中的入口函数定义
+```python
+    if __name__ == "__main__":
+        main()
 ```
 
 ## 高质量封库细节
