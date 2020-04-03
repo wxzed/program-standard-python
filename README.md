@@ -1,9 +1,9 @@
-# 编程规范
+# python编程规范
 
 python语言 Raspberry封库编程规范 <br>
 ## 大原则：
  * 看到github，就有购买欲望，并且知道怎么购买
- * 看到ino，就能玩通，尽量不用去查其他资料
+ * 看到example，就能玩通，尽量不用去查其他资料
  * 看到函数名称，就能基本猜到函数功能
  * 如果只有一个存取接口，不要写子类，全部在一个类里实现，比如DFRobot_Sensor，也不要有_IIC的后缀
 ## 细则
@@ -17,72 +17,133 @@ python语言 Raspberry封库编程规范 <br>
 ## 索引
 
 * [参考库](#参考库)
-* [变量及函数共同属性](#变量及函数共同属性)
+* [文件结构与命名](#文件结构与命名)
+* [常量命名](#常量命名)
 * [变量命名](#变量命名)
-* [函数命名](#函数命名)
-* [寄存器](#寄存器)
 * [结构体](#结构体)
-* [枚举](#枚举)
-* [列表](#列表)
+* [函数命名与注释](#函数命名与注释)
 * [类](#类)
 * [if-else](#if-else)
 * [运算符](#运算符)
-* [Readme中多个参数函数写法](#readme中多个参数函数写法)
 * [example中py文件的命令](#example中py文件的命令)
 * [example中的入口函数定义](#example中的入口函数定义)
+* [Readme中多个参数函数写法](#readme中多个参数函数写法)
 * [py文件头部写法](#py文件头部写法)
 * [高质量封库细节](#高质量封库细节)
 
 ## 参考库
 
+https://github.com/DFRobot/DFRobot_RaspberryPi_Motor <br>
+https://github.com/DFRobot/DFRobot_INA219<br>
 https://github.com/cdjq/DFRobot_DS3231M <br>
 
-## 变量及函数共同属性
+## 文件结构与命名
 
-变量和函数共同属性
+库可以直接放在 Arduino 封库的根目录下，建立 python 目录用于存放树莓派的驱动和demo <br>
+ <br>
+文档结构应类似如下，如果不与 Arduino 一起使用，则直接将原本 python 文件夹下的内容放在根目录下: <br>
+<pre>
+
+--python:
+| --raspberrypi:
+| | --DFRobot_Module.py
+| | --examples:
+| | | --Modele_demo_xxxx.py
+| | | --Modele_demo_yyy.py
+| | ......
+|
+| --esp32:
+| | --DFRobot_Module.py
+| | --examples:
+| | | --Modele_demo_xxxx.py
+| | | --Modele_demo_yyy.py
+| | ......
+| |
+
+</pre>
+
+## 例程文件头部写法
 ```python
-    #当非下划线开头时代表为公有成员变量
-    SensorValue        = 0x00
-    
-    #当以下划线开头时代表为私有成员变量
-    _SensorValue        = 0x00
-    
-    #当非下划线开头时代表为公有函数
-    def test_func(self):
-        #do something
-    
-    #当以下划线开头时代表为私有函数
-    def _test_func(self):
-        #do something
+  '''
+  @file 文件名（不能使用中文）
+  如何做这个实验，描述实验步骤（只需要下载程序就能肉眼观测到的简单小实验例如blink，这步可以不写）（不能使用中文）
+  @n 实验现象是什么（不能使用中文）
+  
+  @Copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
+  @licence   The MIT License (MIT)
+  
+  @author [XXXXX](XXXX.XXXX@dfrobot.com)
+  @url https://github.com/DFRobot/DFRobot_Module
+  @version  V1.0
+  @date  2020-2-12
+  '''
 ```
+
+## 类与注释
+
+类名应当以 DFRobot_ 作为开头, 模组型号作为结尾。<br>
+在构造函数中说明参数:
+```python
+class DFRobot_Module:
+
+  def __init__(i2cAddr):
+    ''' Class constructor
+
+    :param i2cAddr    Module's i2c address
+    '''
+    pass
+```
+
+## 常量命名
+
+C 库中的宏，包括枚举变量在 python 中需要写在类的全局变量中，全部使用大写字母和下划线组合
+
+C 库中的定义：
+```cpp
+#define MODULE_CONF   0x00
+
+typedef enum {
+  eModuleConfEnum1,
+  eModuleConfEnum2
+} eModuleConf_t;
+```
+
+对应 python 中的定义：
+```py
+class DFRobot_Module:
+
+  _REG_CONF = 0x00
+
+  CONF_ENUM1 = 0x00
+  CONF_ENUM2 = 0x01
+
+```
+
 ## 变量命名
-```python
-    #驼峰方式，公有成员变量
-    SensorValue        = 0x00
-    
-    #驼峰方式，私有成员变量
-    _SensorValue        = 0x00
-```
+受保护的变量（对应 cpp 里的 protected ）名前需要加 _, 私有的变量（对应 cpp 里的 private ）名前需要加 __ <br>
+任何类型的变量和函数名都使用下划线加小写字母命名规则 <br>
 
-## 函数命名
+例：
 ```python
-    #全部小写，专有名词之间以下划线连接，公有函数
-    def test_func(self):
-        #do something
-    #全部小写，专有名词之间以下划线连接，私有函数
-    def _test_func(self):
-        #do something
-```
+class DFRobot_Module:
 
-## 寄存器
-寄存器变量命名方式
-```python
-    #全部大写，专有名词之间以下划线连接，公有成员变量
-    REG_RTC_SEC        = 0x68
-    
-    #全部大写，专有名词之间以下划线连接，私有成员变量
-    _REG_RTC_SEC        = 0X00
-    
+  _protect_var = 1  # 受保护的变量
+  _protect_list = [0, 1]  # 变量注释
+  _protect_dict = {
+    "a": 1
+  }
+
+  __private_var = 1  # 私有的变量
+  __private_list = [0, 1]  # 变量注释
+  __private_dict = {
+    "a": 1
+  }
+
+  public_var = 1  # 公有变量
+  public_list = [0, 1]
+  public_dict = {
+    "a": 1
+  }
 ```
 
 ## 结构体
@@ -95,39 +156,52 @@ class TestStruct(Structure):
                 ('z',c_double)]
 ```
 
-## 枚举
-枚举变量命名方式
-```python
-    #驼峰方式命名，公有成员变量
-    SquareWave_1Hz      = 0x00
-    SquareWave_1kHz     = 0x08
-    MinutesMatch                 = 0x07
-    MinutesHoursMatch            = 0x08
+## 函数命名与注释
+受保护的函数（对应 cpp 里的 protected ）名前需要加 _, 私有的函数（对应 cpp 里的 private ）名前需要加 __ <br>
+函数名使用下划线加小写字母命名规则 <br>
 
-    #驼峰方式命名，私有成员变量
-    _SquareWave_1Hz     = 0x00
-    _SquareWave_1kHz    = 0x08
-    _MinutesMatch                 = 0x07
-    _MinutesHoursMatch            = 0x08
-```
+示例：
+```py
+class DFRobot_Module:
 
-## 列表
-列表相关命名方式
-```python
-    #全部小写，专有名词之间以下划线连接，公有成员变量
-    test_list          =[]
-    month              =[]
-    #全部小写，专有名词之间以下划线连接，公有成员变量
-    _test_list          =[]
-    _month              =[]
-```
+  def __init__(self, param1):
+    ''' Module init
 
-## 类
+    :param param1:int Set to ...
+    '''
+    pass
 
-以DFRobot_开头,后面接ClassName,ClassName首字母要大些
-正确的写法
-```python
-class DFRobot_Sensor:
+  def _private_func(self, param1):
+    ''' func detail
+
+    :param param1:int Set to ...
+    '''
+    pass
+
+  def public_func(self, param1):
+    ''' Check param1
+
+    :param param1:int Parameter to check
+
+    :return:bool Check result
+      :retval True Check succeed
+      :retval False Check falied
+    '''
+    if param1:
+      return True
+    else:
+      return False
+
+  POWER_ON = 0x00
+  POWER_OFF = 0x01
+
+  def public_func2(self):
+    ''' Return power status
+
+    :return Power status
+    '''
+    return self._powerStatus
+
 ```
 
 ## if-else
@@ -148,13 +222,18 @@ class DFRobot_Sensor:
     x += 1
     x > 10
 ```
+## example中py文件的命名
+看到demo名称基本就能猜到功能，专有名词之间以下划线连接。
+```python
+  get_time_and_temp.py
+  get_time_from_NTP.py
+```
 
-为了各个库之间的互相兼容，必须做到以下几点。<br>
-
-  1. 库的 py 文件中除个别情况外不能有全局变量，所有相关变量应定义在 class 中
-  2. 库相关的变量定义要么定义在 class 中，要么加上库名作为前缀
-  3. 所有有特殊需求的外设通信（比如说要把IIC通信速率提高到800KHZ），在每次开始通信前必须进行相关配置，通信完成后必须把更改了的配置恢复到默认状态
-
+## example中的入口函数定义
+```python
+    if __name__ == "__main__":
+        main()
+```
 
 ## Readme中多个参数函数写法
 
@@ -181,36 +260,6 @@ class DFRobot_Sensor:
   @param seconds Alarm clock (second)
   '''
   set_alarm(alarmType, date, hour, mode, minute, second)
-```
-
-## py文件头部写法
-```python
-  '''
-  @file 文件名（不能使用中文）
-  如何做这个实验，描述实验步骤（只需要下载程序就能肉眼观测到的简单小实验例如blink，这步可以不写）（不能使用中文）
-  @n 实验现象是什么（不能使用中文）
-  
-  @Copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
-  @licence   The MIT License (MIT)
-  
-  @author [LuoYufeng](yufeng.luo@dfrobot.com)
-  @url https://github.com/DFRobot/DFRobot_DS3231M
-  @version  V1.0
-  @date  2020-2-12
-  '''
-```
-
-## example中py文件的命名
-```python
-  #看到demo名称基本就能猜到功能，专有名词之间以下划线连接。
-  get_time_and_temp.py
-  get_time_from_NTP.py
-```
-
-## example中的入口函数定义
-```python
-    if __name__ == "__main__":
-        main()
 ```
 
 ## 高质量封库细节
