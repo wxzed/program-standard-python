@@ -28,6 +28,7 @@ python语言 Raspberry封库编程规范 <br>
 * [if-else](#if-else)
 * [运算符](#运算符)
 * [Readme中多个参数函数写法](#readme中多个参数函数写法)
+* [example中py文件的命令](#example中py文件的命令)
 * [py文件头部写法](#py文件头部写法)
 * [高质量封库细节](#高质量封库细节)
 
@@ -157,36 +158,52 @@ class DFRobot_Sensor:
 ## Readme中多个参数函数写法
 
 采用doxygen注释规则描述参数
-```
-    '''
-    @brief Set operational mode to VL53L0X
-    
-    @param mode  Work mode settings
-        Single : Single mode
-        Continuous : Back-to-back mode
-    @param precision  Set measurement precision
-        High：High precision(0.25mm)
-        Low: Low precision(1mm)
-    @return  true if execute successfully, false otherwise.
-    '''
-    setMode(mode, precision);
+```python
+  '''
+  @brief Set alarm clock
+  @param alarmType:EverySecond,
+  @n               SecondsMatch,
+  @n               SecondsMinutesMatch,
+  @n               SecondsMinutesHoursMatch,
+  @n               SecondsMinutesHoursDateMatch,
+  @n               SecondsMinutesHoursDayMatch, #Alarm1
+  @n               EveryMinute,
+  @n               MinutesMatch,
+  @n               MinutesHoursMatch,
+  @n               MinutesHoursDateMatch,
+  @n               MinutesHoursDayMatch,        #Alarm2
+  @n               UnknownAlarm
+  @param days    Alarm clock Day (day)
+  @param hours   Alarm clock Hour (hour)
+  @param mode:   H24hours, AM, PM
+  @param minutes Alarm clock (minute)
+  @param seconds Alarm clock (second)
+  '''
+  set_alarm(alarmType, date, hour, mode, minute, second)
 ```
 
 ## py文件头部写法
 ```python
-    '''
-    @file 文件名（不能使用中文）
-    如何做这个实验，描述实验步骤（只需要下载程序就能肉眼观测到的简单小实验例如blink，这步可以不写）（不能使用中文）
-    @n 实验现象是什么（不能使用中文）
-    
-    @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
-    @licence     The MIT License (MIT)
-    @author      Alexander(ouki.wang@dfrobot.com)
-    @version  V1.0
-    @date  2019-07-16
-    @get from https://www.dfrobot.com
-    @url https://github.com/DFRobot/DFRobot_PAJ7620U2
-    '''
+  '''
+  @file 文件名（不能使用中文）
+  如何做这个实验，描述实验步骤（只需要下载程序就能肉眼观测到的简单小实验例如blink，这步可以不写）（不能使用中文）
+  @n 实验现象是什么（不能使用中文）
+  
+  @Copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
+  @licence   The MIT License (MIT)
+  
+  @author [LuoYufeng](yufeng.luo@dfrobot.com)
+  @url https://github.com/DFRobot/DFRobot_DS3231M
+  @version  V1.0
+  @date  2020-2-12
+  '''
+```
+
+## example中py文件的命令
+```python
+  #看到demo名称基本就能猜到功能，专有名词之间以下划线连接。
+  get_time_and_temp.py
+  get_time_from_NTP.py
 ```
 
 ## 高质量封库细节
